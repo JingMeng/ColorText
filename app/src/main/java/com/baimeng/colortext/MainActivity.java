@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ColorTrackTextView colorText;
     private ColorTrackTextContainer mIndicatorContainer;
     private ViewPager mViewPager;
-    private List<TextView> mIndicators;
+    private List<ColorTrackTextView> mIndicators;
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
@@ -66,16 +66,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 //在滚动的过程中会不断的回调
-//                ColorTrackTextView left = mIndicators.get(position);
-//                left.setDirection(ColorTrackTextView.Direction.RIGHT_TO_LEFT);
-//                left.setCurrentProgress(1-positionOffset);
-//                try {
-//                    ColorTrackTextView right = mIndicators.get(position + 1);
-//                    right.setDirection(ColorTrackTextView.Direction.LEFT_TO_RIGHT);
-//                    right.setCurrentProgress(positionOffset);
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                ColorTrackTextView left = mIndicators.get(position);
+                left.setDirection(ColorTrackTextView.Direction.RIGHT_TO_LEFT);
+                left.setCurrentProgress(1-positionOffset);
+                try {
+                    ColorTrackTextView right = mIndicators.get(position + 1);
+                    right.setDirection(ColorTrackTextView.Direction.LEFT_TO_RIGHT);
+                    right.setCurrentProgress(positionOffset);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
 
@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public View getView(int position, ViewGroup parent) {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.topMargin = 15 ;
-                params.bottomMargin = 15 ;
-                TextView colorTrackTextView = new TextView(MainActivity.this);
+//                params.topMargin = 15 ;
+//                params.bottomMargin = 15 ;
+                ColorTrackTextView colorTrackTextView = new ColorTrackTextView(MainActivity.this);
                 colorTrackTextView.setTextSize(14);
                 colorTrackTextView.setGravity(Gravity.CENTER);
                // colorTrackTextView.setBackgroundColor(Color.parseColor("#ff5566"));
                 colorTrackTextView.setText(items[position]);
-                //colorTrackTextView.setChangeColor(Color.RED);
+                colorTrackTextView.setChangeColor(Color.RED);
                 colorTrackTextView.setLayoutParams(params);
                 mIndicators.add(colorTrackTextView);
                 colorTrackTextView.setTextColor(Color.BLACK);
