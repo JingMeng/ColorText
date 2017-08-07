@@ -6,9 +6,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.baimeng.colortext.indicator.ColorTrackTextContainer;
+import com.baimeng.colortext.indicator.IndicatorAdapter;
 import com.baimeng.colortext.view.ColorTrackTextView;
 
 import java.util.ArrayList;
@@ -16,9 +19,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String [] items = {"直播","推荐","视频","图片","段子","精华"};
+    private String [] items = {"直播","推荐","视频"
+            ,"段友秀","图片","段子"
+            , "同城","精华","游戏"
+    };
     private ColorTrackTextView colorText;
-    private LinearLayout mIndicatorContainer;
+    private ColorTrackTextContainer mIndicatorContainer;
     private ViewPager mViewPager;
     private List<ColorTrackTextView> mIndicators;
 
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mIndicators = new ArrayList<>() ;
-        mIndicatorContainer = (LinearLayout) findViewById(R.id.indiicator_view);
+        mIndicatorContainer = (ColorTrackTextContainer) findViewById(R.id.indiicator_view);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         initIndicator();
         initViewPager();
@@ -83,17 +89,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initIndicator() {
-        for (int i = 0 ; i < items.length ; i++){
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.weight = 1 ;
-            ColorTrackTextView colorTrackTextView = new ColorTrackTextView(this);
-            colorTrackTextView.setTextSize(20);
-            colorTrackTextView.setText(items[i]);
-            colorTrackTextView.setChangeColor(Color.RED);
-            colorTrackTextView.setLayoutParams(params);
-            mIndicatorContainer.addView(colorTrackTextView);
-            mIndicators.add(colorTrackTextView);
-        }
+        mIndicatorContainer.setAdapter(new IndicatorAdapter() {
+            @Override
+            public int getCount() {
+                return items.length;
+            }
+
+            @Override
+            public View getView(int position, ViewGroup parent) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                ColorTrackTextView colorTrackTextView = new ColorTrackTextView(MainActivity.this);
+                colorTrackTextView.setTextSize(20);
+                colorTrackTextView.setBackgroundColor(Color.parseColor("#ff5566"));
+                colorTrackTextView.setText(items[position]);
+                colorTrackTextView.setChangeColor(Color.RED);
+                colorTrackTextView.setLayoutParams(params);
+                mIndicators.add(colorTrackTextView);
+                return colorTrackTextView;
+            }
+        });
+//        for (int i = 0 ; i < items.length ; i++){
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.weight = 1 ;
+//            ColorTrackTextView colorTrackTextView = new ColorTrackTextView(this);
+//            colorTrackTextView.setTextSize(20);
+//            colorTrackTextView.setText(items[i]);
+//            colorTrackTextView.setChangeColor(Color.RED);
+//            colorTrackTextView.setLayoutParams(params);
+//            mIndicatorContainer.addView(colorTrackTextView);
+//            mIndicators.add(colorTrackTextView);
+//        }
     }
 
 //    public void leftToRight(View view){
