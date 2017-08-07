@@ -10,6 +10,7 @@
        android:id="@+id/indiicator_view"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       app:tabVisibleNums="6"
        android:paddingTop="10dp"
        android:paddingBottom="10dp">
    </com.baimeng.colortext.indicator.ColorTrackTextContainer>

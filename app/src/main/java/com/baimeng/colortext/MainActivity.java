@@ -1,14 +1,18 @@
 package com.baimeng.colortext;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.baimeng.colortext.indicator.ColorTrackTextContainer;
 import com.baimeng.colortext.indicator.IndicatorAdapter;
@@ -26,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private ColorTrackTextView colorText;
     private ColorTrackTextContainer mIndicatorContainer;
     private ViewPager mViewPager;
-    private List<ColorTrackTextView> mIndicators;
+    private List<TextView> mIndicators;
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,16 +66,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 //在滚动的过程中会不断的回调
-                ColorTrackTextView left = mIndicators.get(position);
-                left.setDirection(ColorTrackTextView.Direction.RIGHT_TO_LEFT);
-                left.setCurrentProgress(1-positionOffset);
-                try {
-                    ColorTrackTextView right = mIndicators.get(position + 1);
-                    right.setDirection(ColorTrackTextView.Direction.LEFT_TO_RIGHT);
-                    right.setCurrentProgress(positionOffset);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+//                ColorTrackTextView left = mIndicators.get(position);
+//                left.setDirection(ColorTrackTextView.Direction.RIGHT_TO_LEFT);
+//                left.setCurrentProgress(1-positionOffset);
+//                try {
+//                    ColorTrackTextView right = mIndicators.get(position + 1);
+//                    right.setDirection(ColorTrackTextView.Direction.LEFT_TO_RIGHT);
+//                    right.setCurrentProgress(positionOffset);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
 
 
 
@@ -98,16 +103,40 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public View getView(int position, ViewGroup parent) {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                ColorTrackTextView colorTrackTextView = new ColorTrackTextView(MainActivity.this);
-                colorTrackTextView.setTextSize(20);
-                colorTrackTextView.setBackgroundColor(Color.parseColor("#ff5566"));
+                params.topMargin = 15 ;
+                params.bottomMargin = 15 ;
+                TextView colorTrackTextView = new TextView(MainActivity.this);
+                colorTrackTextView.setTextSize(14);
+                colorTrackTextView.setGravity(Gravity.CENTER);
+               // colorTrackTextView.setBackgroundColor(Color.parseColor("#ff5566"));
                 colorTrackTextView.setText(items[position]);
-                colorTrackTextView.setChangeColor(Color.RED);
+                //colorTrackTextView.setChangeColor(Color.RED);
                 colorTrackTextView.setLayoutParams(params);
                 mIndicators.add(colorTrackTextView);
+                colorTrackTextView.setTextColor(Color.BLACK);
                 return colorTrackTextView;
             }
-        });
+
+            @Override
+            public void highLightIndicator(View view) {
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.RED);
+            }
+
+            @Override
+            public void restoreIndicator(View view) {
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.BLACK);
+            }
+
+            @Override
+            public View getBottomTrackView() {
+                View view = new View(MainActivity.this);
+                view.setBackgroundColor(Color.RED);
+                view.setLayoutParams(new ViewGroup.MarginLayoutParams(88,8));
+                return view;
+            }
+        },mViewPager);
 //        for (int i = 0 ; i < items.length ; i++){
 //            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //            params.weight = 1 ;
